@@ -1,4 +1,5 @@
 package com.bridgelabz.AddressBookSystem;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class AddressBookMain {
     public static Map<String,AddressBook> addressBookMap= new HashMap<>();
@@ -193,7 +195,7 @@ public class AddressBookMain {
     }
 
     private static void readFromFile() {
-        String path = "C:\\Users\\ASUS\\IdeaProjects\\AddressBookDay28\\src\\main\\java\\com\\bridgelabz\\AddressBookSystem.txt";
+        String path = "C:\\Users\\INS 5570\\IdeaProjects\\UpdatedAddressBookUsingCSVandJSON\\src\\main\\java\\com\\bridgelabz\\AddressBookSystem\\AddressBooks.txt";
         System.out.println("Reading from : " + path + "\n");
         try {
             Files.lines(new File(path).toPath()).forEach(contactDetails -> System.out.println(contactDetails));
@@ -203,9 +205,9 @@ public class AddressBookMain {
         }
     }
 
-    public static void writeToCSVFile() {
+    private static void writeToCSVFile() {
         FileWriter fileWriter = null;
-        String csvPath = "C:\\Users\\ASUS\\IdeaProjects\\AddressBookDay28.csv";
+        String csvPath = "C:\\Users\\INS 5570\\Desktop\\AddressBooks.csv";
 
         try {
             fileWriter = new FileWriter(csvPath);
@@ -229,8 +231,8 @@ public class AddressBookMain {
         }
     }
 
-    public static void readFromCSVFile(){
-        String csvPath = "C:\\Users\\ASUS\\IdeaProjects\\AddressBookDay28.csv";
+    private static void readFromCSVFile(){
+        String csvPath = "C:\\Users\\INS 5570\\Desktop\\AddressBooks.csv";
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(csvPath);
@@ -250,7 +252,7 @@ public class AddressBookMain {
             e.printStackTrace();
         }
 
-        System.out.println("\nReading data from csv file:");
+        System.out.println("\nReading from : " + csvPath + "\n");
         linesOfData.stream().forEach(lines -> {
             for (String value : lines)
                 System.out.print(value + "\t");
@@ -271,7 +273,7 @@ public class AddressBookMain {
         Scanner in = new Scanner(System.in);
         boolean status= true;
         while(status) {
-            System.out.println("****MENU:****");
+            System.out.println("******************MENU:******************");
             System.out.println("=> To Add Address Book: PRESS 1");
             System.out.println("=> To Add Contact: PRESS 2");
             System.out.println("=> To Edit an Existing Contact: PRESS 3");
@@ -282,7 +284,8 @@ public class AddressBookMain {
             System.out.println("=> To Display Contacts in an Address Book in Sorted Order based on a specific detail: PRESS 8");
             System.out.println("=> To Read and Display all the Contacts from the Address Book File: PRESS 9");
             System.out.println("=> To Read and Display all the Contacts from the Address Book CSV File: PRESS 10");
-            System.out.println("=> To EXIT: PRESS 11");
+            System.out.println("=> To Read and Display all the Contacts from the Address Book JSON File: PRESS 11");
+            System.out.println("=> To EXIT: PRESS 12");
             int choice = in.nextInt();
 
             switch (choice) {
@@ -290,12 +293,14 @@ public class AddressBookMain {
                     addAddressBook();
                     writeToFile();
                     writeToCSVFile();
+                    writeToJSONFile();
                     System.out.println();
                     break;
                 case 2:
                     addContacts();
                     writeToFile();
                     writeToCSVFile();
+                    writeToJSONFile();
                     break;
                 case 3:
                     editContact();
@@ -321,10 +326,26 @@ public class AddressBookMain {
                 case 10:
                     readFromCSVFile();
                     break;
+                case 11:
+                    readFromJSONFile();
+                    break;
                 default:
                     status=false;
                     break;
             }
         }
+    }
+
+    private static void readFromJSONFile() {
+    }
+
+    private static void writeToJSONFile() {
+    }
+
+    private static abstract class TypeAdapter<T> {
+        public abstract <JsonWriter> void write(JsonWriter jsonWriter, String contact) throws IOException;
+    }
+
+    private static class TypeToken<T> {
     }
 }
